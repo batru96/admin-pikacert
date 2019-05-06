@@ -1,9 +1,8 @@
-
-
 const doLogin = (inputs, handler) => {
-    const { username, password } = inputs;
+    const { email, password } = inputs;
+
     setTimeout(() => {
-        if (username == 'admin' && password == '123456') return handler({});
+        if (email == 'admin@gmail.com' && password == '123456') return handler({});
         handler({ error: 'Invalid username or password' });
     }, 5000);
 }
