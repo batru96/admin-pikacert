@@ -4,6 +4,7 @@ import TextInput from '../components/TextInput/index';
 import FormButton from '../components/FormButton/index';
 import doLogin from '../api/doLogin';
 import spinner from '../images/animations/spinner.gif';
+import { setAdminToken } from '../helpers/PikaSession';
 
 class Login extends Component {
     constructor(props) {
@@ -30,11 +31,13 @@ class Login extends Component {
     }
 
     loginHandler(response) {
+        
         this.setState({ loading: false });
         if (response.error) {
             this.setState({ error: response.error });
         } else {
-            console.log(response);
+            setAdminToken(response.token);
+            this.props.history.push('/')
         }
     }
 
