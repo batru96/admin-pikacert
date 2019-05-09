@@ -1,8 +1,6 @@
-const rootURL = 'https://test.pikacert.com';
+const rootURL = 'http://localhost:1336';
 const apis = {
-    LOGIN: rootURL + '/Customer/Login',
-    SIGNUP: rootURL + '/Customer/SignUp',
-    LOGIN_BY_TOKEN: rootURL + '/Customer/LoginByToken'
+    LOGIN: rootURL + '/Administrator/Login',
 }
 
 export default apis;

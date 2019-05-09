@@ -21,7 +21,10 @@ class Login extends Component {
     ]
 
     login(event) {
-        this.setState({ loading: true });
+        this.setState({
+            error: '',
+            loading: true
+        });
         doLogin(this.state.fieldInputsState, this.loginHandler);
         event.preventDefault();
     }
@@ -31,7 +34,7 @@ class Login extends Component {
         if (response.error) {
             this.setState({ error: response.error });
         } else {
-            alert('Login success');
+            console.log(response);
         }
     }
 
@@ -39,7 +42,7 @@ class Login extends Component {
         const { error, loading } = this.state;
         return (
             <div>
-                <form className="login-form">
+                <form className="login-form" onSubmit={this.login}>
                     <FormHeader title="PikaCert Admin Panel" />
                     <div className="form-body">
                         {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
