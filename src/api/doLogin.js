@@ -6,7 +6,7 @@ const doLogin = (inputs, handler) => {
 
     axios({
         method: 'POST',
-        url:  apis.LOGIN,
+        url: apis.LOGIN,
         data: {
             username: username,
             password: password
@@ -18,7 +18,7 @@ const doLogin = (inputs, handler) => {
             handler(res.data);
         }
     }).catch(error => {
-        console.log('@@@ Error:', error);
+        handler({ error: 'Network error' });
     });
 }
 
