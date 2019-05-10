@@ -1,16 +1,12 @@
 import apis from './apis';
-const { LOGIN } = apis;
-const axios = require('axios');
+import axios from 'axios';
 
 const doLogin = (inputs, handler) => {
     const { username, password } = inputs;
 
     axios({
         method: 'POST',
-        url: LOGIN,
-        headers: {
-
-        },
+        url:  apis.LOGIN,
         data: {
             username: username,
             password: password
