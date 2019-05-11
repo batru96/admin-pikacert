@@ -8,6 +8,10 @@ html {
   background-color: #f3f8fb;
 }
 
+body {
+  background-color: transparent !important;
+}
+
 .App {
   text-align: center;
 }
@@ -109,6 +113,7 @@ html {
   text-align: left;
   background-color: white;
   margin: 20px;
+  padding: 20px;
 }
 
 .tabs-container {
