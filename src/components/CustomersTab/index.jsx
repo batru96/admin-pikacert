@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import getCustomer from '../../api/getCustomers';
+import deleteCustomer from '../../api/deleteCustomer';
 import { countCertType, convertDateToString } from '../../helpers/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -12,7 +13,6 @@ class CustomersTab extends Component {
     }
 
     componentDidMount() {
-
         getCustomer((data) => {
             if (data.error) {
                 alert(data.error);
@@ -28,6 +28,20 @@ class CustomersTab extends Component {
                 console.log(this.state.customers);
             }
         });
+    }
+
+    removeCustomer(customer) {
+        if (window.confirm('Are you sure you want to delete this customer?')) {
+            deleteCustomer(customer.id)
+                .then(data => {
+                    if (data === 'OK') {
+                        const customers = this.state.customers.filter(item => item.id !== customer.id);
+                        this.setState({ customers });
+                    } else {
+                        alert(data.message);
+                    }
+                }).catch(error => alert(error));
+        }
     }
 
     render() {
@@ -67,7 +81,7 @@ class CustomersTab extends Component {
                                 <td>in development</td>
                                 <td>in development</td>
                                 <td>
-                                    <button ng-click="deleteCustomer(customer)" type="button" className="btn btn-danger btn-flat">
+                                    <button onClick={() => this.removeCustomer(customer)} className="btn btn-danger btn-flat">
                                         <FontAwesomeIcon icon="times-circle" />
                                     </button>
                                 </td>
