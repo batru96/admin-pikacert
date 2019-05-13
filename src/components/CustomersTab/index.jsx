@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from '../Modal/index';
 import getCustomer from '../../api/getCustomers';
 import deleteCustomer from '../../api/deleteCustomer';
+import addCustomer from '../../api/addCustomer';
 import { countCertType, convertDateToString } from '../../helpers/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -10,12 +11,16 @@ class CustomersTab extends Component {
         super(props);
         this.state = {
             customers: [],
+            isOpenAddingForm: false,
             isAdding: false
         };
-        this.add = this.add.bind(this);
     }
 
     componentDidMount() {
+        this.loadCustomers();
+    }
+
+    loadCustomers() {
         getCustomer((data) => {
             if (data.error) {
                 alert(data.error);
@@ -32,13 +37,29 @@ class CustomersTab extends Component {
         });
     }
 
-    add() {
-        alert('Add');
+    addCustomer(customer) {
+        this.setState({
+            isAdding: true
+        });
+
+        addCustomer(customer)
+            .then(data => {
+                this.setState({
+                    isOpenAddingForm: false,
+                    isAdding: false,
+                });
+                this.loadCustomers();
+            }).catch(error => {
+                alert(error);
+                this.setState({
+                    isAdding: false,
+                });
+            })
     }
 
     closeDialog() {
         this.setState({
-            isAdding: false
+            isOpenAddingForm: false
         });
     }
 
@@ -57,10 +78,10 @@ class CustomersTab extends Component {
     }
 
     render() {
-        const { customers, isAdding } = this.state;
+        const { customers, isOpenAddingForm, isAdding } = this.state;
         return (
             <div className="table-responsive">
-                <button onClick={() => this.setState({ isAdding: true })} className="add-button">Add</button>
+                <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
                 <table className="table table-bordered table-hover dataTable" role="grid">
                     <thead>
                         <tr className="thead-light" role="row">
@@ -103,7 +124,12 @@ class CustomersTab extends Component {
                         ))}
                     </tbody>
                 </table>
-                <Modal visible={isAdding} closeDialog={this.closeDialog.bind(this)}/>
+                <Modal
+                    visible={isOpenAddingForm}
+                    isAdding={isAdding}
+                    closeDialog={this.closeDialog.bind(this)}
+                    save={this.addCustomer.bind(this)}
+                />
             </div>
         );
     }
