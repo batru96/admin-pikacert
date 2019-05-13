@@ -21,18 +21,18 @@ class App extends Component {
   }
 
   componentWillMount() {
-    checkToken(getAdminToken(), error => {
-      if (error == null) {
-        this.setState({
-          isLogin: true,
-          isLoading: false
-        });
-      } else {
-        this.setState({
-          isLoading: false
-        });
-      }
-    });
+      checkToken(getAdminToken(), error => {
+        if (error == null) {
+          this.setState({
+            isLogin: true,
+            isLoading: false
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      });
   }
 
   loginSuccess() {
@@ -45,7 +45,7 @@ class App extends Component {
     const { isLoading, isLogin } = this.state;
     return (
       <div className="App">
-        {isLoading ? <Loading /> : isLogin ?
+        {isLoading ? <Loading visible={true} /> : isLogin ?
           <Router>
             <Route path="/" exact component={Home} />
             <Route path="/login/" exact component={() => <Redirect to={{ pathname: '/' }} />} />

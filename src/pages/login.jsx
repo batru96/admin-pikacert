@@ -4,7 +4,7 @@ import FormHeader from '../components/FormHeader/index';
 import TextInput from '../components/TextInput/index';
 import FormButton from '../components/FormButton/index';
 import doLogin from '../api/doLogin';
-import spinner from '../images/animations/spinner.gif';
+import Loading from '../components/Loading/index';
 
 class Login extends Component {
     constructor(props) {
@@ -46,12 +46,12 @@ class Login extends Component {
         return (
             <div>
                 <form className="login-form" onSubmit={this.login}>
-                    <FormHeader title="PikaCert Admin Panel" />
+                    <FormHeader title="Admin Panel" />
                     <div className="form-body">
                         {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
                         <FormButton target={this} />
                     </div>
-                    {loading && <img src={spinner} alt="Loading indicator" />}
+                    <Loading visible={loading} />
                     <div className="loading-indicator"></div>
                     {error.length > 0 && <h5 onClick={() => this.setState({ error: '' })} style={{ color: 'red', padding: 10, textAlign: 'center' }}>{error}</h5>}
                 </form>
