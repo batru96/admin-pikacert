@@ -66,6 +66,7 @@ body {
 
 .form-body {
   padding: 50px 30px;
+  text-align: left;
 }
 
 .text-input {
@@ -128,7 +129,7 @@ body {
   padding: 10px;
   flex: 1;
   transition: 0.5s;
-  outline: none;
+  outline: none !important;
 }
 
 .tab-button:hover {
@@ -139,3 +140,78 @@ body {
 .tab-button-active {
   background-color: lightgrey;
 }
+
+.add-button {
+  background-color: transparent;
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100px;
+  border-radius: 5px;
+  transition: 0.5s;
+  outline: none !important;
+}
+
+.add-button:hover {
+  background-color: lightgrey;
+}
+
+.add-button:active {
+  background-color: transparent;
+}
+
+.custom-modal {
+  position: fixed;
+  background-color: rgba(42, 42, 42, 0.8);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.custom-dialog {
+  background-color: white;
+  width: 500px;
+  margin: auto;
+  margin-top: 50px;
+  padding: 10px;
+}
+
+.dialog-header {
+  position: relative;
+}
+
+.dialog-footer {
+  text-align: center;
+}
+
+.btn-close-dialog {
+  position: absolute;
+  right: 0;
+  top: 5px;
+}
+
+.btn-close-dialog:hover {
+  cursor: pointer;
+}
+
+.dialog-button {
+  background-color: transparent;
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100px;
+  border-radius: 5px;
+  transition: 0.5s;
+  outline: none !important;
+}
+
+.dialog-button:hover {
+  background-color: lightgrey;
+}
+
+.dialog-button:active {
+  background-color: grey;
+  border: solid 1px lightgrey;
+}
+
+
+

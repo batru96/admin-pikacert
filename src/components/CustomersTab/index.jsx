@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from '../Modal/index';
 import getCustomer from '../../api/getCustomers';
 import deleteCustomer from '../../api/deleteCustomer';
 import { countCertType, convertDateToString } from '../../helpers/utils';
@@ -8,8 +9,10 @@ class CustomersTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            customers: []
+            customers: [],
+            isAdding: false
         };
+        this.add = this.add.bind(this);
     }
 
     componentDidMount() {
@@ -25,8 +28,17 @@ class CustomersTab extends Component {
                     customer['signUpDate'] = convertDateToString(date);
                 });
                 this.setState({ customers: data });
-                console.log(this.state.customers);
             }
+        });
+    }
+
+    add() {
+        alert('Add');
+    }
+
+    closeDialog() {
+        this.setState({
+            isAdding: false
         });
     }
 
@@ -45,8 +57,10 @@ class CustomersTab extends Component {
     }
 
     render() {
+        const { customers, isAdding } = this.state;
         return (
             <div className="table-responsive">
+                <button onClick={() => this.setState({ isAdding: true })} className="add-button">Add</button>
                 <table className="table table-bordered table-hover dataTable" role="grid">
                     <thead>
                         <tr className="thead-light" role="row">
@@ -66,7 +80,7 @@ class CustomersTab extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.customers.map(customer => (
+                        {customers.map(customer => (
                             <tr key={customer.id} role="row">
                                 <td>{customer.organisationName}</td>
                                 <td>{customer.lastName}</td>
@@ -89,6 +103,7 @@ class CustomersTab extends Component {
                         ))}
                     </tbody>
                 </table>
+                <Modal visible={isAdding} closeDialog={this.closeDialog.bind(this)}/>
             </div>
         );
     }

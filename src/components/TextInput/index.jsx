@@ -24,7 +24,10 @@ class TextInput extends Component {
     render() {
         const { id, name, type, isRequired } = this.props.item;
         return (
-            <input value={this.state.value} className="text-input" id={id} name={name} type={type} placeholder={name} required={isRequired} onChange={this.onChange} />
+            <div className="form-group">
+                <label>{name}</label>
+                <input id={id} value={this.state.value} className="form-control" type={type} required={isRequired} onChange={this.onChange} />
+            </div>
         );
     }
 }
