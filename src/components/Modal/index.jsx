@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextInput from '../TextInput/index';
 import Loading from '../Loading/index';
+import ErrorMessage from '../ErrorMessage/index';
 
 
 class Modal extends Component {
@@ -24,6 +25,7 @@ class Modal extends Component {
     }
 
     render() {
+        const { isAdding, addingError } = this.props;
         return (
             <div style={{
                 display: this.props.visible ? 'block' : 'none'
@@ -41,9 +43,8 @@ class Modal extends Component {
                     <div className="dialog-footer">
                         <button type="submit" className="dialog-button">Save</button>
                     </div>
-                    <div style={{ textAlign: "center" }}>
-                        <Loading visible={this.props.isAdding} />
-                    </div>
+                    <Loading visible={isAdding} />
+                    <ErrorMessage error={addingError} />
                 </form>
             </div>
         );

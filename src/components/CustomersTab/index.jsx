@@ -12,7 +12,8 @@ class CustomersTab extends Component {
         this.state = {
             customers: [],
             isOpenAddingForm: false,
-            isAdding: false
+            isAdding: false,
+            addingError: null,
         };
     }
 
@@ -49,17 +50,16 @@ class CustomersTab extends Component {
                     isAdding: false,
                 });
                 this.loadCustomers();
-            }).catch(error => {
-                alert(error);
-                this.setState({
-                    isAdding: false,
-                });
-            })
+            }).catch(error => this.setState({
+                isAdding: false,
+                addingError: error
+            }));
     }
 
     closeDialog() {
         this.setState({
-            isOpenAddingForm: false
+            isOpenAddingForm: false,
+            addingError: null
         });
     }
 
@@ -78,7 +78,7 @@ class CustomersTab extends Component {
     }
 
     render() {
-        const { customers, isOpenAddingForm, isAdding } = this.state;
+        const { customers, isOpenAddingForm, isAdding, addingError } = this.state;
         return (
             <div className="table-responsive">
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -127,6 +127,7 @@ class CustomersTab extends Component {
                 <Modal
                     visible={isOpenAddingForm}
                     isAdding={isAdding}
+                    addingError={addingError}
                     closeDialog={this.closeDialog.bind(this)}
                     save={this.addCustomer.bind(this)}
                 />

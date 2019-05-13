@@ -3,7 +3,14 @@ import spinner from '../../images/animations/spinner.gif'
 
 class Loading extends Component {
     render() {
-        return (this.props.visible ? <img src={spinner} alt="Loading indicator" /> : null);
+        return (
+            <div style={{
+                textAlign: 'center',
+                display: this.props.visible ? 'block' : 'none'
+            }}>
+                <img src={spinner} alt="Loading indicator" />
+            </div>
+        );
     }
 }
 
