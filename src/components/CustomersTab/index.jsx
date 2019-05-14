@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Modal from '../Modal/index';
 import TextInput from '../TextInput/index';
-import getCustomer from '../../api/getCustomers';
-import deleteCustomer from '../../api/deleteCustomer';
-import addCustomer from '../../api/addCustomer';
+import { getCustomers, addCustomer, deleteCustomer } from '../../api/customerApi';
 import { countCertType, convertDateToString } from '../../helpers/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -30,10 +28,8 @@ class CustomersTab extends Component {
     }
 
     loadCustomers() {
-        getCustomer((data) => {
-            if (data.error) {
-                alert(data.error);
-            } else {
+        getCustomers()
+            .then(data => {
                 data.forEach(customer => {
                     const numbersOfType = countCertType(customer.certs);
                     customer['countCertDraft'] = numbersOfType.countCertDraft;
@@ -42,11 +38,10 @@ class CustomersTab extends Component {
                     customer['signUpDate'] = convertDateToString(date);
                 });
                 this.setState({ customers: data });
-            }
-        });
+            }).catch(error => alert(error))
     }
 
-    addCustomer() {
+    createCustomer() {
         this.setState({
             isAdding: true
         });
@@ -140,7 +135,7 @@ class CustomersTab extends Component {
                     }}
                     visible={isOpenAddingForm}
                     closeDialog={this.closeDialog.bind(this)}
-                    save={this.addCustomer.bind(this)}
+                    save={this.createCustomer.bind(this)}
                 >
                     {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
                 </Modal>
