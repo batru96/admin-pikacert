@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
-import getPromos from '../../api/getPromos';
+import Modal from '../Modal/index';
+import TextInput from '../TextInput/index';
 import { convertDateToString } from '../../helpers/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import deletePromo from '../../api/deletePromo';
+import { getPromos, addPromo, deletePromo } from '../../api/promoApis';
 
 class PromoTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             promos: [],
-            isOpenAddingForm: false
-        }
+            isOpenAddingForm: false,
+            isAdding: false,
+            addingError: null
+        };
+        this.closeDialog = this.closeDialog.bind(this);
     }
+
+    FieldInputs = [
+        { id: 'code', name: 'Promo Code', type: 'text', isRequired: true },
+        { id: 'description', name: 'Description', type: 'text', isRequired: true },
+        { id: 'credit', name: 'Credit', type: 'number', isRequired: true },
+        { id: 'note', name: 'Note', type: 'text', isRequired: true },
+        { id: 'startDate', name: 'Start Date', type: 'date', isRequired: true },
+        { id: 'expiryDate', name: 'Expiry Date', type: 'date', isRequired: true },
+    ];
 
     componentDidMount() {
         this.loadPromoes();
@@ -28,7 +41,6 @@ class PromoTab extends Component {
                     return promo;
                 });
                 this.setState({ promos });
-                // console.log(promos);
             }).catch(error => console.log(error));
     }
 
@@ -42,8 +54,32 @@ class PromoTab extends Component {
         }
     }
 
+    closeDialog() {
+        this.setState({
+            isOpenAddingForm: false,
+            addingError: null
+        });
+    }
+
+    addPromo() {
+        this.setState({ isAdding: true });
+        addPromo(this.state.fieldInputsState)
+            .then(data => {
+                this.setState({
+                    isAdding: false,
+                    isOpenAddingForm: false
+                });
+                this.loadPromoes();
+            }).catch(error => {
+                this.setState({
+                    isAdding: false,
+                    addingError: error
+                });
+            });
+    }
+
     render() {
-        const { promos } = this.state;
+        const { promos, isAdding, addingError, isOpenAddingForm } = this.state;
         return (
             <div className="table-responsive">
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -81,7 +117,19 @@ class PromoTab extends Component {
                         ))}
                     </tbody>
                 </table>
-            </div>
+                <Modal attrs={{
+                    title: 'Add Promo',
+                    isAdding,
+                    addingError,
+                }}
+                    visible={isOpenAddingForm}
+                    closeDialog={this.closeDialog}
+                    save={this.addPromo.bind(this)}
+                >
+                    {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
+
+                </Modal>
+            </div >
         );
     }
 }

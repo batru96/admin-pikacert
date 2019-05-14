@@ -6,5 +6,6 @@ export const APIS = {
     DELETE_CUSTOMER: rootURL + '/Customer',
     ADD_CUSTOMER: rootURL + '/Customer/SignUp',
     GET_PROMOES: rootURL + '/Promo',
+    ADD_PROMO: rootURL + '/Promo',
     DELETE_PROMO: rootURL + '/Promo'
 };
