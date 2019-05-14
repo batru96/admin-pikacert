@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Modal from '../Modal/index';
+import TextInput from '../TextInput/index';
 import getCustomer from '../../api/getCustomers';
 import deleteCustomer from '../../api/deleteCustomer';
 import addCustomer from '../../api/addCustomer';
@@ -16,6 +17,13 @@ class CustomersTab extends Component {
             addingError: null,
         };
     }
+    FieldInputs = [
+        { id: 'firstName', name: 'First name', type: 'text', isRequired: true },
+        { id: 'lastName', name: 'Last name', type: 'text', isRequired: true },
+        { id: 'email', name: 'Email', type: 'email', isRequired: true },
+        { id: 'password', name: 'Password', type: 'password', isRequired: true },
+        { id: 'organisationName', name: 'Organisation', type: 'text', isRequired: true }
+    ];
 
     componentDidMount() {
         this.loadCustomers();
@@ -38,12 +46,12 @@ class CustomersTab extends Component {
         });
     }
 
-    addCustomer(customer) {
+    addCustomer() {
         this.setState({
             isAdding: true
         });
 
-        addCustomer(customer)
+        addCustomer(this.state.fieldInputsState)
             .then(data => {
                 this.setState({
                     isOpenAddingForm: false,
@@ -125,12 +133,17 @@ class CustomersTab extends Component {
                     </tbody>
                 </table>
                 <Modal
+                    attrs={{
+                        title: 'Add Promo',
+                        isAdding,
+                        addingError,
+                    }}
                     visible={isOpenAddingForm}
-                    isAdding={isAdding}
-                    addingError={addingError}
                     closeDialog={this.closeDialog.bind(this)}
                     save={this.addCustomer.bind(this)}
-                />
+                >
+                    {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
+                </Modal>
             </div>
         );
     }
