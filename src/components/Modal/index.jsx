@@ -13,7 +13,8 @@ class Modal extends Component {
         const { isAdding, addingError, title } = this.props.attrs;
         return (
             <div style={{
-                display: this.props.visible ? 'block' : 'none'
+                opacity: this.props.visible ? 1 : 0,
+                zIndex: this.props.visible ? 999 : -1
             }} className="custom-modal">
                 <form className="custom-dialog" onSubmit={this.submit.bind(this)}>
                     <div className="dialog-header">
