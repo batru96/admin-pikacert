@@ -4,5 +4,7 @@ export const APIS = {
     LOGIN_BY_TOKEN: rootURL + '/Administrator/LoginByToken',
     GET_CUSTOMERS: rootURL + '/Customer',
     DELETE_CUSTOMER: rootURL + '/Customer',
-    ADD_CUSTOMER: rootURL + '/Customer/SignUp'
+    ADD_CUSTOMER: rootURL + '/Customer/SignUp',
+    GET_PROMOES: rootURL + '/Promo',
+    DELETE_PROMO: rootURL + '/Promo'
 };

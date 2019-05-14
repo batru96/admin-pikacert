@@ -222,3 +222,6 @@ body {
   margin-bottom: 0;
 }
 
+.table-delete-row {
+  text-align: center;
+}
