@@ -1,4 +1,4 @@
-import apis from './apis';
+import { APIS } from '../helpers/constants';
 import axios from 'axios';
 import { getAdminToken } from '../helpers/PikaSession';
 
@@ -6,7 +6,7 @@ const deleteCustomer = (id) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'DELETE',
-            url: apis.DELETE_CUSTOMER,
+            url: APIS.DELETE_CUSTOMER,
             headers: { Authorization: getAdminToken() },
             data: { id }
         }).then(res => {

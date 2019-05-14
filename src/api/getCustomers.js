@@ -1,11 +1,11 @@
-import apis from './apis';
+import { APIS } from '../helpers/constants';
 import axios from 'axios';
 import { getAdminToken } from '../helpers/PikaSession';
 
 const getCustomers = (handler) => {
     axios({
         method: 'GET',
-        url: apis.GET_CUSTOMERS,
+        url: APIS.GET_CUSTOMERS,
         headers: { Authorization: getAdminToken() }
     }).then(res => {
         handler(res.data);

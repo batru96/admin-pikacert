@@ -1,11 +1,11 @@
-import apis from './apis';
+import { APIS } from '../helpers/constants';
 import axios from 'axios';
 import { setAdminToken } from '../helpers/PikaSession';
 
 const checkToken = (token, handler) => {
     axios({
         method: 'GET',
-        url: apis.LOGIN_BY_TOKEN,
+        url: APIS.LOGIN_BY_TOKEN,
         headers: { Authorization: token }
     }).then(res => {
         if (res.data.error) {

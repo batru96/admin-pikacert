@@ -1,4 +1,4 @@
-import apis from './apis';
+import { APIS } from '../helpers/constants';
 import axios from 'axios';
 
 const doLogin = (inputs, handler) => {
@@ -6,7 +6,7 @@ const doLogin = (inputs, handler) => {
 
     axios({
         method: 'POST',
-        url: apis.LOGIN,
+        url: APIS.LOGIN,
         data: {
             username: username,
             password: password

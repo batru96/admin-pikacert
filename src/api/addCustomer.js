@@ -1,11 +1,11 @@
-import apis from './apis';
+import { APIS } from '../helpers/constants';
 import axios from 'axios';
 
 const addCustomer = (inputs) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'POST',
-            url: apis.ADD_CUSTOMER,
+            url: APIS.ADD_CUSTOMER,
             data: inputs
         }).then(res => {
             if (res.data.error) {
