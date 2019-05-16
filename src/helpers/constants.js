@@ -7,5 +7,10 @@ export const APIS = {
     ADD_CUSTOMER: rootURL + '/Customer/SignUp',
     GET_PROMOES: rootURL + '/Promo',
     ADD_PROMO: rootURL + '/Promo',
-    DELETE_PROMO: rootURL + '/Promo'
+    DELETE_PROMO: rootURL + '/Promo',
+    GET_CREDITS: rootURL + '/Credit',
+    ADD_CREDIT: rootURL + '/Credit',
+    DELETE_CREDIT: rootURL + '/Credit',
 };
+
+export const MAX_ROW = 10;

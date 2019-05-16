@@ -226,3 +226,52 @@ body {
 .table-delete-row {
   text-align: center;
 }
+
+.payment-ref {
+  max-width: 300px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-tab-group {
+  margin-bottom: 5px;
+}
+
+.table-tab-btn {
+  background-color: transparent;
+  transition: 0.1s;
+  border: none !important;
+  outline: none !important;
+  width: 30px;
+}
+
+.table-tab-btn:hover {
+  background-color: lightgrey;
+}
+
+.table-tab-btn:active {
+  color: black !important;
+}
+
+.table-tab-btn-active {
+  transition: 0.1s;
+  border: none;
+  outline: none !important;
+  width: 30px;
+  background-color: #4185f4;
+  color: white;
+  margin-right: 5px;
+}
+
+.previous-btn {
+  background-color: transparent;
+  transition: 0.5s;
+  border: none;
+  outline: none !important;
+  width: 80px;
+}
+
+.previous-btn:hover {
+  background-color: lightgrey;
+}
