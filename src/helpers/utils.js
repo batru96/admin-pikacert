@@ -14,7 +14,7 @@ module.exports = {
         let month = dateObject.getMonth() + 1;
         const year = dateObject.getFullYear();
         if (month < 10) month = '0' + month;
-        const date = dateObject.getDate() > 10 ? dateObject.getDate() : '0' + dateObject.getDate();
-        return year + '/' + month + '/' + date;
+        const date = dateObject.getDate() >= 10 ? dateObject.getDate() : '0' + dateObject.getDate();
+        return year + '-' + month + '-' + date;
     }
 }

@@ -11,6 +11,7 @@ class PromoTab extends Component {
         this.state = {
             promos: [],
             isOpenAddingForm: false,
+            isOpenEditingForm: false,
             isAdding: false,
             addingError: null
         };
@@ -18,13 +19,14 @@ class PromoTab extends Component {
     }
 
     FieldInputs = [
-        { id: 'code', name: 'Promo Code', type: 'text', isRequired: true },
-        { id: 'description', name: 'Description', type: 'text', isRequired: true },
-        { id: 'credit', name: 'Credit', type: 'number', isRequired: true },
-        { id: 'note', name: 'Note', type: 'text', isRequired: true },
-        { id: 'startDate', name: 'Start Date', type: 'date', isRequired: true },
-        { id: 'expiryDate', name: 'Expiry Date', type: 'date', isRequired: true },
+        { id: 'code', name: 'Promo Code', type: 'text', isRequired: true, value: '' },
+        { id: 'description', name: 'Description', type: 'text', isRequired: true, value: '' },
+        { id: 'credit', name: 'Credit', type: 'number', isRequired: true, value: '' },
+        { id: 'note', name: 'Note', type: 'text', isRequired: true, value: '' },
+        { id: 'startDate', name: 'Start Date', type: 'date', isRequired: true, value: '' },
+        { id: 'expiryDate', name: 'Expiry Date', type: 'date', isRequired: true, value: '' },
     ];
+    FieldInputsEdit = [];
 
     componentDidMount() {
         this.loadPromoes();
@@ -78,8 +80,22 @@ class PromoTab extends Component {
             });
     }
 
+    openEditForm(promo) {
+        this.FieldInputsEdit = this.FieldInputs.map((item) => {
+            if (item.id === 'code') item.disabled = true;
+            item.value = promo[item.id];
+            return item;
+        });
+        console.log(this.FieldInputsEdit);
+        this.setState({ isOpenEditingForm: true });
+    }
+
+    editPromo(promo) {
+        alert('Edit');
+    }
+
     render() {
-        const { promos, isAdding, addingError, isOpenAddingForm } = this.state;
+        const { promos, isAdding, addingError, isOpenAddingForm, isOpenEditingForm } = this.state;
         return (
             <div className="table-responsive">
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -112,6 +128,7 @@ class PromoTab extends Component {
                                     <button onClick={() => this.removePromo(promo)} className="btn btn-danger btn-flat">
                                         <FontAwesomeIcon icon="times-circle" />
                                     </button>
+                                    <button onClick={() => this.openEditForm(promo)}>Edit</button>
                                 </td>
                             </tr>
                         ))}
@@ -127,7 +144,17 @@ class PromoTab extends Component {
                     save={this.addPromo.bind(this)}
                 >
                     {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
-
+                </Modal>
+                <Modal attrs={{
+                    title: 'Edit Promo',
+                    isAdding,
+                    addingError
+                }}
+                    visible={isOpenEditingForm}
+                    closeDialog={this.closeDialog}
+                    save={this.editPromo.bind(this)}
+                >
+                    {this.FieldInputsEdit.map(item => <TextInput key={item.id} item={item} target={this} />)}
                 </Modal>
             </div >
         );

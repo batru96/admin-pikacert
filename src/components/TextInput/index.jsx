@@ -4,7 +4,7 @@ class TextInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
+            value: this.props.item.value
         };
         this.onChange = this.onChange.bind(this);
     }
@@ -22,11 +22,11 @@ class TextInput extends Component {
     }
 
     render() {
-        const { id, name, type, isRequired } = this.props.item;
+        const { id, name, type, isRequired, disabled } = this.props.item;
         return (
             <div className="form-group">
                 <label>{name}</label>
-                <input id={id} value={this.state.value} className="form-control" type={type} required={isRequired} onChange={this.onChange} />
+                <input id={id} value={this.state.value} className="form-control" type={type} required={isRequired} onChange={this.onChange} disabled={disabled} />
             </div>
         );
     }
