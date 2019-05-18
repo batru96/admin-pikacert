@@ -16,5 +16,22 @@ module.exports = {
         if (month < 10) month = '0' + month;
         const date = dateObject.getDate() >= 10 ? dateObject.getDate() : '0' + dateObject.getDate();
         return year + '-' + month + '-' + date;
+    },
+    calculatePages: (data, maxRow) => {
+        const maxPage = Math.ceil(data.length / 10);
+        const tabButtons = [];
+        for (let i = 0; i < maxPage; i++) {
+            tabButtons.push({ id: i });
+        }
+        return { maxPage, tabButtons };
+    },
+    getCertsByTabIndex: (data, currentTab, MAX_ROW) => {
+        return data.filter((item, index) => {
+            if (index >= MAX_ROW * currentTab && index < (MAX_ROW * currentTab + MAX_ROW)) {
+                // item['createdAt'] = convertDateToString(new Date(item['createdAt']));
+                return item;
+            }
+            return null;
+        });
     }
 }

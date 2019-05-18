@@ -12,6 +12,7 @@ export const APIS = {
     GET_CREDITS: rootURL + '/Credit',
     ADD_CREDIT: rootURL + '/Credit',
     DELETE_CREDIT: rootURL + '/Credit',
+    GET_CERTS: rootURL + '/Certificate'
 };
 
 export const MAX_ROW = 10;
