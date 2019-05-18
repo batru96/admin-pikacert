@@ -43,3 +43,10 @@ export const deletePromo = id => {
             .catch(error => reject(error));
     });
 }
+
+export const editPromo = (promo) => axios({
+    method: 'PUT',
+    url: APIS.UPDATE_PROMO,
+    headers: { Authorization: getAdminToken() },
+    data: { promo }
+}).then(res => res.data);

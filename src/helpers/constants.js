@@ -8,6 +8,7 @@ export const APIS = {
     GET_PROMOES: rootURL + '/Promo',
     ADD_PROMO: rootURL + '/Promo',
     DELETE_PROMO: rootURL + '/Promo',
+    UPDATE_PROMO: rootURL + '/Promo',
     GET_CREDITS: rootURL + '/Credit',
     ADD_CREDIT: rootURL + '/Credit',
     DELETE_CREDIT: rootURL + '/Credit',

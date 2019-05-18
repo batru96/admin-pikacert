@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faWindowClose, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { faWindowClose, faTimesCircle, faPenSquare } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { getAdminToken } from './helpers/PikaSession';
 import checkToken from './api/checkToken';
@@ -9,7 +9,7 @@ import Home from './pages/home';
 import Loading from './components/Loading/index';
 import './App.css';
 
-library.add(faWindowClose, faTimesCircle);
+library.add(faWindowClose, faTimesCircle, faPenSquare);
 class App extends Component {
   constructor(props) {
     super(props);

@@ -12,10 +12,11 @@ class PromoTab extends Component {
             promos: [],
             isOpenAddingForm: false,
             isOpenEditingForm: false,
-            isAdding: false,
+            isProcessing: false,
             addingError: null
         };
         this.closeDialog = this.closeDialog.bind(this);
+        this.closeEditDialog = this.closeEditDialog.bind(this);
     }
 
     FieldInputs = [
@@ -63,18 +64,25 @@ class PromoTab extends Component {
         });
     }
 
+    closeEditDialog() {
+        this.setState({
+            isOpenEditingForm: false,
+            addingError: false
+        })
+    }
+
     addPromo() {
-        this.setState({ isAdding: true });
+        this.setState({ isProcessing: true });
         addPromo(this.state.fieldInputsState)
             .then(data => {
                 this.setState({
-                    isAdding: false,
+                    isProcessing: false,
                     isOpenAddingForm: false
                 });
                 this.loadPromoes();
             }).catch(error => {
                 this.setState({
-                    isAdding: false,
+                    isProcessing: false,
                     addingError: error
                 });
             });
@@ -86,16 +94,21 @@ class PromoTab extends Component {
             item.value = promo[item.id];
             return item;
         });
-        console.log(this.FieldInputsEdit);
         this.setState({ isOpenEditingForm: true });
     }
 
     editPromo(promo) {
-        alert('Edit');
+        this.setState({ isProcessing: true });
+        setTimeout(() => {
+            this.setState({
+                isProcessing: false,
+                isOpenEditingForm: false
+            });
+        }, 3000);
     }
 
     render() {
-        const { promos, isAdding, addingError, isOpenAddingForm, isOpenEditingForm } = this.state;
+        const { promos, isProcessing, addingError, isOpenAddingForm, isOpenEditingForm } = this.state;
         return (
             <div className="table-responsive">
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -125,10 +138,12 @@ class PromoTab extends Component {
                                 <td>{promo.expiryDate}</td>
                                 <td>{promo.adminName}</td>
                                 <td className="table-delete-row">
+                                    <button onClick={() => this.openEditForm(promo)} className="btn btn-success btn-flat mr-2">
+                                        <FontAwesomeIcon icon="pen-square" />
+                                    </button>
                                     <button onClick={() => this.removePromo(promo)} className="btn btn-danger btn-flat">
                                         <FontAwesomeIcon icon="times-circle" />
                                     </button>
-                                    <button onClick={() => this.openEditForm(promo)}>Edit</button>
                                 </td>
                             </tr>
                         ))}
@@ -136,7 +151,7 @@ class PromoTab extends Component {
                 </table>
                 <Modal attrs={{
                     title: 'Add Promo',
-                    isAdding,
+                    isAdding: isProcessing,
                     addingError,
                 }}
                     visible={isOpenAddingForm}
@@ -147,11 +162,11 @@ class PromoTab extends Component {
                 </Modal>
                 <Modal attrs={{
                     title: 'Edit Promo',
-                    isAdding,
+                    isAdding: isProcessing,
                     addingError
                 }}
                     visible={isOpenEditingForm}
-                    closeDialog={this.closeDialog}
+                    closeDialog={this.closeEditDialog}
                     save={this.editPromo.bind(this)}
                 >
                     {this.FieldInputsEdit.map(item => <TextInput key={item.id} item={item} target={this} />)}
