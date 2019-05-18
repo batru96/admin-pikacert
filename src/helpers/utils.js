@@ -18,7 +18,7 @@ module.exports = {
         return year + '-' + month + '-' + date;
     },
     calculatePages: (data, maxRow) => {
-        const maxPage = Math.ceil(data.length / 10);
+        const maxPage = Math.ceil(data.length / maxRow);
         const tabButtons = [];
         for (let i = 0; i < maxPage; i++) {
             tabButtons.push({ id: i });
@@ -28,7 +28,14 @@ module.exports = {
     getCertsByTabIndex: (data, currentTab, MAX_ROW) => {
         return data.filter((item, index) => {
             if (index >= MAX_ROW * currentTab && index < (MAX_ROW * currentTab + MAX_ROW)) {
-                // item['createdAt'] = convertDateToString(new Date(item['createdAt']));
+                return item;
+            }
+            return null;
+        });
+    },
+    getBatchesByTabIndex: (data, currentTab, MAX_ROW) => {
+        return data.filter((item, index) => {
+            if (index >= MAX_ROW * currentTab && index < (MAX_ROW * currentTab + MAX_ROW)) {
                 return item;
             }
             return null;
