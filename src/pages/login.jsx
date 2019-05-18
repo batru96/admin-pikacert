@@ -19,8 +19,8 @@ class Login extends Component {
     }
 
     FieldInputs = [
-        { id: 'username', name: 'Username', type: 'text', isRequired: true },
-        { id: 'password', name: 'Password', type: 'password', isRequired: true }
+        { id: 'username', name: 'Username', type: 'text',  value: '', isRequired: true },
+        { id: 'password', name: 'Password', type: 'password',  value: '', isRequired: true }
     ]
 
     login(event) {

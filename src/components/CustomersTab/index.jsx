@@ -16,11 +16,11 @@ class CustomersTab extends Component {
         };
     }
     FieldInputs = [
-        { id: 'firstName', name: 'First name', type: 'text', isRequired: true },
-        { id: 'lastName', name: 'Last name', type: 'text', isRequired: true },
-        { id: 'email', name: 'Email', type: 'email', isRequired: true },
-        { id: 'password', name: 'Password', type: 'password', isRequired: true },
-        { id: 'organisationName', name: 'Organisation', type: 'text', isRequired: true }
+        { id: 'firstName', name: 'First name', value: '', type: 'text', isRequired: true },
+        { id: 'lastName', name: 'Last name', value: '', type: 'text', isRequired: true },
+        { id: 'email', name: 'Email', type: 'email', value: '', isRequired: true },
+        { id: 'password', name: 'Password', type: 'password', value: '', isRequired: true },
+        { id: 'organisationName', name: 'Organisation', type: 'text', value: '', isRequired: true }
     ];
 
     componentDidMount() {
