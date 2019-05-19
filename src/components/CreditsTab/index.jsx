@@ -1,23 +1,42 @@
 import React, { Component } from 'react';
-import { getCredits } from '../../api/creditApis';
+import TableTab from '../TableTab/index';
+import Modal from '../Modal/index';
+import TextInput from '../TextInput/index';
+import Select from '../Select';
+import { getCredits, addCredit } from '../../api/creditApis';
+import { getCustomers } from '../../api/customerApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { convertDateToString } from '../../helpers/utils';
 import { MAX_ROW } from '../../helpers/constants';
-import TableTab from '../TableTab/index';
 
 class CreditsTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             credits: [],
+            customers: [],
             currentTab: 0,
-            tabButtons: []
+            tabButtons: [],
+            isOpenAddingForm: false,
+            isProcessing: false,
+            addingError: null,
+            selectedCustomerId: ""
         };
         this.data = null;
+        this.addNewCredit = this.addNewCredit.bind(this);
+        this.selectCustomer = this.selectCustomer.bind(this);
     }
+    FieldInputs = [
+        { id: 'credit', name: 'Credit', type: 'number', value: '', min: 10, isRequired: true },
+        { id: 'description', name: 'Description', type: 'textarea', value: '', isRequired: true },
+        { id: 'amount', name: 'Amount paid', type: 'number', value: '', min: 0, isRequired: true },
+        { id: 'currency', name: 'Currency', type: 'text', value: '', isRequired: true },
+        { id: 'paymentMethod', name: 'Payment method', type: 'text', value: '', isRequired: true }
+    ];
 
     componentDidMount() {
         this.loadCredits();
+        this.loadCustomers();
     }
 
     loadCredits() {
@@ -32,6 +51,24 @@ class CreditsTab extends Component {
             const credits = this.getCreditsByTabIndex(this.state.currentTab);
             this.setState({ credits, tabButtons });
         }).catch(error => console.log(error));
+    }
+
+    loadCustomers() {
+        getCustomers()
+            .then(data => {
+                const customers = data.map(item => ({
+                    id: item.id,
+                    value: item.organisationName
+                }));
+                if (customers.length > 0) {
+                    this.setState({
+                        customers,
+                        selectedCustomerId: customers[0].id
+                    });
+                }
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     changeTab(tabId) {
@@ -49,8 +86,40 @@ class CreditsTab extends Component {
         });
     }
 
+    addNewCredit() {
+        if (this.state.selectedCustomerId === "") {
+            this.setState({
+                addingError: "Mising customer!"
+            });
+        } else {
+            this.setState({ isProcessing: true });
+            const newCredit = this.state.fieldInputsState;
+            newCredit['customerId'] = this.state.selectedCustomerId;
+            addCredit(newCredit)
+                .then(data => {
+                    if (data.error === true) {
+                        this.setState({
+                            isProcessing: false,
+                            addingError: data.message
+                        });
+                    } else {
+                        this.setState({
+                            isProcessing: false,
+                            fieldInputsState: {},
+                            isOpenAddingForm: false
+                        });
+                        this.loadCredits();
+                    }
+                }).catch(error => console.log(error));
+        }
+    }
+
+    selectCustomer(event) {
+        this.setState({ selectCustomerId: event.target.value });
+    }
+
     render() {
-        const { credits, tabButtons, currentTab } = this.state;
+        const { credits, customers, tabButtons, currentTab, isProcessing, addingError, isOpenAddingForm } = this.state;
         return (
             <div className="table-responsive">
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -71,7 +140,7 @@ class CreditsTab extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {credits.map((item, index) => (
+                        {credits.map((item) => (
                             <tr key={item.id}>
                                 <td>{item.orgName}</td>
                                 <td>{item.createdAt}</td>
@@ -91,7 +160,25 @@ class CreditsTab extends Component {
                         ))}
                     </tbody>
                 </table>
-            </div>
+                <Modal
+                    visible={isOpenAddingForm}
+                    attrs={{
+                        isAdding: isProcessing,
+                        addingError: addingError,
+                        title: "Add credit"
+                    }}
+                    save={this.addNewCredit}
+                    closeDialog={() => this.setState({ isOpenAddingForm: false })}
+                >
+                    <Select
+                        onChange={this.selectCustomer}
+                        selectedCustomerId={this.state.selectedCustomerId}
+                        list={customers}
+                        name="Organisation"
+                    />
+                    {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
+                </Modal>
+            </div >
         );
     }
 }
