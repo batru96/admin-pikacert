@@ -13,7 +13,9 @@ export const APIS = {
     ADD_CREDIT: rootURL + '/Credit',
     DELETE_CREDIT: rootURL + '/Credit',
     GET_CERTS: rootURL + '/Certificate',
-    GET_BATCHES: rootURL + '/Batch'
+    GET_BATCHES: rootURL + '/Batch',
+    GET_BACKGROUNDS: rootURL + '/Background',
+    ADD_BACKGROUND: rootURL + '/Background',
 };
 
 export const MAX_ROW = 10;

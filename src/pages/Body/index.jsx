@@ -5,12 +5,13 @@ import CreditsTab from '../CreditsTab';
 import CertsTab from '../CertsTab';
 import PromoTab from '../PromoTab';
 import BatchesTab from '../BatchesTab';
+import BackgroundsTab from '../BackgroundsTab';
 
 class Body extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTab: 'CREDITS'
+            currentTab: 'BACKGROUNDS'
         };
     }
     groupButtons = [
@@ -19,6 +20,7 @@ class Body extends Component {
         { id: 'btnCerts', title: 'Certificates', tabname: 'CERTIFICATES' },
         { id: 'btnBatches', title: 'Batches', tabname: 'BATCHES' },
         { id: 'btnPromo', title: 'Promo', tabname: 'PROMO' },
+        { id: 'btnBackgrounds', title: 'Backgrounds', tabname: 'BACKGROUNDS' },
     ];
 
     changeTab(tabname) {
@@ -46,6 +48,7 @@ class Body extends Component {
                 {currentTab === 'CERTIFICATES' && <CertsTab />}
                 {currentTab === 'BATCHES' && <BatchesTab />}
                 {currentTab === 'PROMO' && <PromoTab />}
+                {currentTab === 'BACKGROUNDS' && <BackgroundsTab />}
             </div>
         )
     }

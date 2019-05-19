@@ -225,6 +225,7 @@ body {
 
 .table-delete-row {
   text-align: center;
+  width: 150px;
 }
 
 .payment-ref {
