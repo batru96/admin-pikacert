@@ -22,11 +22,34 @@ class TextInput extends Component {
     }
 
     render() {
-        const { id, name, type, isRequired, disabled } = this.props.item;
+        const { value } = this.state;
+        const { id, name, type, isRequired, disabled, min } = this.props.item;
         return (
             <div className="form-group">
-                <label>{name}</label>
-                <input id={id} value={this.state.value} className="form-control" type={type} required={isRequired} onChange={this.onChange} disabled={disabled} />
+                <label className="font-weight-bold">{name}</label>
+                {(type !== 'textarea' && type !== 'select') &&
+                    <input
+                        id={id}
+                        value={value}
+                        className="form-control"
+                        type={type}
+                        required={isRequired}
+                        onChange={this.onChange}
+                        disabled={disabled}
+                        min={min}
+                    />
+                }
+                {type === "textarea" &&
+                    <textarea
+                        id={id}
+                        className="form-control"
+                        required={isRequired}
+                        onChange={this.onChange}
+                        disabled={disabled}
+                        defaultValue={value}
+                        rows="5"
+                    />
+                }
             </div>
         );
     }
