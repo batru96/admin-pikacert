@@ -1,16 +1,16 @@
 // eslint-disable-next-line
 import React, { Component } from 'react';
-import CustomersTab from '../CustomersTab/index';
-import CreditsTab from '../CreditsTab/index';
-import CertsTab from '../CertsTab/index';
-import PromoTab from '../PromoTab/index';
-import BatchesTab from '../BatchesTab/index';
+import CustomersTab from '../CustomersTab';
+import CreditsTab from '../CreditsTab';
+import CertsTab from '../CertsTab';
+import PromoTab from '../PromoTab';
+import BatchesTab from '../BatchesTab';
 
 class Body extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTab: 'BATCHES'
+            currentTab: 'CREDITS'
         };
     }
     groupButtons = [

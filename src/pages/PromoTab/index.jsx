@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Modal from '../Modal/index';
-import TextInput from '../TextInput/index';
+import Modal from '../../components/Modal';
+import TextInput from '../../components/TextInput';
 import { convertDateToString } from '../../helpers/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getPromos, addPromo, deletePromo } from '../../api/promoApis';

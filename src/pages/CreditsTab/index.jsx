@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import TableTab from '../TableTab/index';
-import Modal from '../Modal/index';
-import TextInput from '../TextInput/index';
-import Select from '../Select';
+import TableTab from "../../components/TableTab";
+import Modal from "../../components/Modal";
+import TextInput from "../../components/TextInput";
+import Select from "../../components/Select";
 import { getCredits, addCredit } from '../../api/creditApis';
 import { getCustomers } from '../../api/customerApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

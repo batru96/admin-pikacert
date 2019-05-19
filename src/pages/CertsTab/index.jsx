@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TableTab from '../TableTab/index';
+import TableTab from '../../components/TableTab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getCerts } from '../../api/certApis';
 import { MAX_ROW } from '../../helpers/constants';

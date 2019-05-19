@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TableTab from '../TableTab/index';
+import TableTab from '../../components/TableTab';
 import { getBatches } from '../../api/batchApis';
 import { MAX_ROW } from '../../helpers/constants';
 import { calculatePages, getBatchesByTabIndex, convertDateToString } from '../../helpers/utils';
