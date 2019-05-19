@@ -2,15 +2,11 @@ import { APIS } from '../helpers/constants';
 import axios from 'axios';
 import { getAdminToken } from '../helpers/PikaSession';
 
-export const getCustomers = () => {
-    return new Promise((resolve, reject) => {
-        axios({
-            method: 'GET',
-            url: APIS.GET_CUSTOMERS,
-            headers: { Authorization: getAdminToken() }
-        }).then(res => resolve(res.data)).catch(error => reject(error));
-    });
-}
+export const getCustomers = () => axios({
+    method: 'GET',
+    url: APIS.GET_CUSTOMERS,
+    headers: { Authorization: getAdminToken() }
+}).then(res => res.data);
 
 export const addCustomer = customer => {
     return new Promise((resolve, reject) => {
