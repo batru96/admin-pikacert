@@ -16,6 +16,7 @@ export const APIS = {
     GET_BATCHES: rootURL + '/Batch',
     GET_BACKGROUNDS: rootURL + '/Background',
     ADD_BACKGROUND: rootURL + '/Background',
+    REMOVE_BACKGROUND: rootURL + '/Background'
 };
 
 export const MAX_ROW = 10;

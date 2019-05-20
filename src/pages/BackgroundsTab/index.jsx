@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "../../components/Modal";
-import { getBackgrounds, addBackground } from "../../api/backgroundApis";
+import { getBackgrounds, addBackground, removeBackground } from "../../api/backgroundApis";
 
 class BackgroundsTab extends Component {
     constructor(props) {
@@ -73,11 +73,17 @@ class BackgroundsTab extends Component {
 
     }
 
-    removeBackground() {
-
+    delete(background) {
+        if (window.confirm(`Are you sure you want to remove "${background.name}"?`)) {
+            removeBackground(background.id)
+                .then(() => {
+                    this.loadData();
+                }).catch(error => console.log(error));
+        }
     }
+
     render() {
-        const { backgrounds, isProcessing, addingError, isOpenAddingForm, newBackground } = this.state;
+        const { backgrounds, isProcessing, addingError, isOpenAddingForm } = this.state;
         return (
             <div>
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -105,7 +111,7 @@ class BackgroundsTab extends Component {
                                         <button onClick={() => this.openEditForm(background)} className="btn btn-success btn-flat mr-2">
                                             <FontAwesomeIcon icon="pen-square" />
                                         </button>
-                                        <button onClick={() => this.removeBackground(background)} className="btn btn-danger btn-flat">
+                                        <button onClick={() => this.delete(background)} className="btn btn-danger btn-flat">
                                             <FontAwesomeIcon icon="times-circle" />
                                         </button>
                                     </td>

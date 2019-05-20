@@ -16,3 +16,10 @@ export const addBackground = data => axios({
     },
     data: data
 }).then(res => res.data);
+
+export const removeBackground = id => axios({
+    method: "DELETE",
+    url: APIS.REMOVE_BACKGROUND,
+    headers: { Authorization: getAdminToken() },
+    data: { id }
+}).then(res => res.data);
