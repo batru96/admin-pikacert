@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "../../components/Modal";
-import { getBackgrounds, addBackground, removeBackground } from "../../api/backgroundApis";
+import {
+    getBackgrounds, addBackground, removeBackground, uploadBackgroundData
+} from "../../api/backgroundApis";
 
 class BackgroundsTab extends Component {
     constructor(props) {
@@ -13,10 +15,13 @@ class BackgroundsTab extends Component {
             addingError: null,
             newBackground: {
                 name: "",
-                orientation: "portrait"
+                orientation: "Portrait",
+                imageSource_1: "",
+                imageSource_2: "",
             },
         };
         this.imageUpload = null;
+        this.imageWithData = null;
     }
 
     componentDidMount() {
@@ -37,7 +42,18 @@ class BackgroundsTab extends Component {
     }
 
     onFileChange = event => {
-        this.imageUpload = event.target.files[0];
+        const background = this.state.newBackground;
+        const file = event.target.files[0]
+        const imageURL = URL.createObjectURL(file);
+        if (event.target.id === "path") {
+            this.imageUpload = file;
+            background.imageSource_1 = imageURL;
+            this.setState({ newBackground: background });
+        } else {
+            this.imageWithData = file;
+            background.imageSource_2 = imageURL;
+            this.setState({ newBackground: background });
+        }
     }
 
     addNewBackground = () => {
@@ -49,7 +65,7 @@ class BackgroundsTab extends Component {
         const fd = new FormData();
         fd.append("name", name);
         fd.append("orientation", orientation);
-        fd.append("background", this.imageUpload, this.imageUpload.name);
+        fd.append("background", this.imageUpload);
 
         addBackground(fd)
             .then(data => {
@@ -59,18 +75,20 @@ class BackgroundsTab extends Component {
                         isProcessing: false
                     });
                 } else {
-                    this.setState({
-                        isOpenAddingForm: false,
-                        isProcessing: false
-                    });
-                    this.loadData();
+                    const newFd = new FormData();
+                    newFd.append('id', data.id);
+                    newFd.append("background", this.imageWithData);
+
+                    uploadBackgroundData(newFd)
+                        .then(data => {
+                            this.setState({
+                                isOpenAddingForm: false,
+                                isProcessing: false
+                            });
+                            this.loadData();
+                        });
                 }
-                console.log(data);
             }).catch(error => console.log(error));
-    }
-
-    openEditForm(background) {
-
     }
 
     delete(background) {
@@ -83,7 +101,7 @@ class BackgroundsTab extends Component {
     }
 
     render() {
-        const { backgrounds, isProcessing, addingError, isOpenAddingForm } = this.state;
+        const { backgrounds, isProcessing, addingError, isOpenAddingForm, newBackground } = this.state;
         return (
             <div>
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
@@ -108,9 +126,6 @@ class BackgroundsTab extends Component {
                                     <td>{background.pathData}</td>
                                     <td>{background.type}</td>
                                     <td className="table-delete-row">
-                                        <button onClick={() => this.openEditForm(background)} className="btn btn-success btn-flat mr-2">
-                                            <FontAwesomeIcon icon="pen-square" />
-                                        </button>
                                         <button onClick={() => this.delete(background)} className="btn btn-danger btn-flat">
                                             <FontAwesomeIcon icon="times-circle" />
                                         </button>
@@ -131,19 +146,37 @@ class BackgroundsTab extends Component {
                     closeDialog={() => this.setState({ isOpenAddingForm: false })}
                 >
                     <div className="form-group">
-                        <label className="font-weight-bold">Background Name</label>
-                        <input id="name" className="form-control" type="text" onChange={this.onChange} required />
+                        <label className="form-group-label">Background Name</label>
+                        <input id="name" className="form-control" type="text" value={newBackground.name} onChange={this.onChange} required />
                     </div>
                     <div className="form-group">
-                        <label className="font-weight-bold">Orientation</label>
-                        <select className="form-control" id="orientation" value="portrait" onChange={this.onChange}>
+                        <label className="form-group-label">Orientation</label>
+                        <select className="form-control" id="orientation" value={newBackground.orientation} onChange={this.onChange}>
                             <option value="Portrait">Portrait</option>
                             <option value="Landscape">Landscape</option>
                         </select>
                     </div>
-                    <div className="form-group">
-                        <label className="font-weight-bold">Background img (blank)</label>
-                        <input id="path" className="form-control-file" type="file" onChange={this.onFileChange} required />
+                    <div className="row">
+                        <div className="col form-group">
+                            <label className="form-group-label">Background img (blank)</label>
+                            <div className="custom-file">
+                                <input id="path" className="custom-file-input" type="file" accept="image/*" onChange={this.onFileChange} required />
+                                <label className="custom-file-label">Choose file...</label>
+                            </div>
+                            <div className="img-background-group">
+                                <img alt="Image blank" className="img-background" src={newBackground.imageSource_1} />
+                            </div>
+                        </div>
+                        <div className="col form-group">
+                            <label className="form-group-label">Background img (with data)</label>
+                            <div className="custom-file">
+                                <input id="pathData" className="custom-file-input" type="file" accept="image/*" onChange={this.onFileChange} required />
+                                <label className="custom-file-label">Choose file...</label>
+                            </div>
+                            <div className="img-background-group">
+                                <img alt="Image with data" className="img-background" src={newBackground.imageSource_2} />
+                            </div>
+                        </div>
                     </div>
                 </Modal>
             </div>

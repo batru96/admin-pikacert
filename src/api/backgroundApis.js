@@ -23,3 +23,10 @@ export const removeBackground = id => axios({
     headers: { Authorization: getAdminToken() },
     data: { id }
 }).then(res => res.data);
+
+export const uploadBackgroundData = data => axios({
+    method: "PATCH",
+    url: APIS.UPLOAD_BACKGROUND_DATA,
+    headers: { Authorization: getAdminToken() },
+    data: data
+}).then(res => res.data);
