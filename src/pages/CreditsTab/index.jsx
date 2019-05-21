@@ -188,7 +188,7 @@ class CreditsTab extends Component {
                 >
                     <Select
                         onChange={this.selectCustomer}
-                        selectedCustomerId={this.state.selectedCustomerId}
+                        value={this.state.selectedCustomerId}
                         list={customers}
                         name="Organisation"
                     />
