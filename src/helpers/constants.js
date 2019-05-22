@@ -1,3 +1,4 @@
+// const rootURL = 'http://localhost:1336';
 const rootURL = 'https://test.pikacert.com';
 export const APIS = {
     LOGIN: rootURL + '/Administrator/Login',
@@ -17,7 +18,10 @@ export const APIS = {
     GET_BACKGROUNDS: rootURL + '/Background',
     ADD_BACKGROUND: rootURL + '/Background',
     REMOVE_BACKGROUND: rootURL + '/Background',
-    UPLOAD_BACKGROUND_DATA: rootURL + '/Background/UploadImageData'
+    UPLOAD_BACKGROUND_DATA: rootURL + '/Background/UploadImageData',
+    GET_CONFIG: rootURL + '/Config',
+    CHANGE_DEFAULT_CREDIT: rootURL + '/Config/Credit',
+    CHANGE_DEFAULT_PRICING: rootURL + '/Config/Pricing',
 };
 
 export const MAX_ROW = 10;

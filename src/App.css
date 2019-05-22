@@ -299,3 +299,9 @@ body {
   display: flex;
   align-items: flex-end;
 }
+
+.form-group-custom {
+  padding: 10px;
+  border: 1px lightgrey solid;
+  margin-bottom: 20px;
+}
