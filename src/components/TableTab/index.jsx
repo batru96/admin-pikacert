@@ -4,7 +4,7 @@ class TableTab extends Component {
     render() {
         const { tabButtons, currentTab } = this.props;
         return (
-            <div className="table-tab-group">
+            <div className="table-tab-container">
                 <button onClick={() => this.props.changeTab(0)} className="previous-btn">Previous</button>
                 {tabButtons.map((item, index) => (
                     item.id === currentTab ?

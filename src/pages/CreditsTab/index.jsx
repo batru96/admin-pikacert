@@ -6,7 +6,7 @@ import Select from "../../components/Select";
 import { getCredits, addCredit } from '../../api/creditApis';
 import { getCustomers } from '../../api/customerApi';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { convertDateToString } from '../../helpers/utils';
+import Utils from '../../helpers/utils';
 import { MAX_ROW } from '../../helpers/constants';
 
 class CreditsTab extends Component {
@@ -40,6 +40,7 @@ class CreditsTab extends Component {
     }
 
     loadCredits() {
+        const { currentTab } = this.state;
         getCredits().then(data => {
             this.data = data;
             const maxPage = Math.ceil(this.data.length / MAX_ROW);
@@ -48,7 +49,7 @@ class CreditsTab extends Component {
                 tabButtons.push({ id: i });
             }
 
-            const credits = this.getCreditsByTabIndex(this.state.currentTab);
+            const credits = Utils.getCreditsByTabIndex(this.data, currentTab, MAX_ROW);
             this.setState({ credits, tabButtons });
         }).catch(error => console.log(error));
     }
@@ -72,18 +73,8 @@ class CreditsTab extends Component {
     }
 
     changeTab(tabId) {
-        const credits = this.getCreditsByTabIndex(tabId);
+        const credits = Utils.getCreditsByTabIndex(this.data, tabId, MAX_ROW);
         this.setState({ currentTab: tabId, credits });
-    }
-
-    getCreditsByTabIndex(currentTab) {
-        return this.data.filter((item, index) => {
-            if (index >= MAX_ROW * currentTab && index < (MAX_ROW * currentTab + MAX_ROW)) {
-                item['createdAt'] = convertDateToString(new Date(item['createdAt']));
-                return item;
-            }
-            return null;
-        });
     }
 
     addNewCredit() {
@@ -118,48 +109,73 @@ class CreditsTab extends Component {
         this.setState({ selectCustomerId: event.target.value });
     }
 
+    startSearch = (event) => {
+        const data = Utils.getDataFromSearch(this.data, "orgName", event.target.value);
+        const maxPage = Math.ceil(data.length / MAX_ROW);
+        const tabButtons = [];
+        for (let i = 0; i < maxPage; i++) {
+            tabButtons.push({ id: i });
+        }
+
+        const credits = Utils.getCreditsByTabIndex(data, 0, MAX_ROW);
+        this.setState({ credits, tabButtons });
+    }
+
     render() {
         const { credits, customers, tabButtons, currentTab, isProcessing, addingError, isOpenAddingForm } = this.state;
         return (
-            <div className="table-responsive">
+            <div>
                 <button onClick={() => this.setState({ isOpenAddingForm: true })} className="add-button">Add</button>
-                <TableTab currentTab={currentTab} tabButtons={tabButtons} changeTab={this.changeTab.bind(this)} />
-                <table className="table table-bordered table-hover dataTable" role="grid">
-                    <thead>
-                        <tr className="thead-light" role="row">
-                            <th>Organisation</th>
-                            <th>Date/time</th>
-                            <th>Transaction Description</th>
-                            <th>Credit</th>
-                            <th>Payment Method</th>
-                            <th>Payment Reference</th>
-                            <th>Amount paid</th>
-                            <th>Currency</th>
-                            <th>Batch ID</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {credits.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.orgName}</td>
-                                <td>{item.createdAt}</td>
-                                <td>{item.description}</td>
-                                <td>{item.credit}</td>
-                                <td>{item.paymentMethod}</td>
-                                <td className="payment-ref">{item.paymentRef}</td>
-                                <td>{item.amount}</td>
-                                <td>{item.currency}</td>
-                                <td>{item.batchId}</td>
-                                <td className="table-delete-row">
-                                    <button onClick={() => this.removeCredit()} className="btn btn-danger btn-flat">
-                                        <FontAwesomeIcon icon="times-circle" />
-                                    </button>
-                                </td>
+                <div className="row" style={{ marginBottom: 5 }}>
+                    <div className="col">
+                        <TableTab
+                            currentTab={currentTab}
+                            tabButtons={tabButtons}
+                            changeTab={this.changeTab.bind(this)}
+                        />
+                    </div>
+                    <div className="col">
+                        <input type="text" className="form-control" onChange={this.startSearch} />
+                    </div>
+                </div>
+                <div className="table-responsive">
+                    <table className="table table-bordered table-hover dataTable" role="grid">
+                        <thead>
+                            <tr className="thead-light" role="row">
+                                <th>Organisation</th>
+                                <th>Date/time</th>
+                                <th>Transaction Description</th>
+                                <th>Credit</th>
+                                <th>Payment Method</th>
+                                <th>Payment Reference</th>
+                                <th>Amount paid</th>
+                                <th>Currency</th>
+                                <th>Batch ID</th>
+                                <th></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {credits.map((item) => (
+                                <tr key={item.id}>
+                                    <td>{item.orgName}</td>
+                                    <td>{item.createdAt}</td>
+                                    <td>{item.description}</td>
+                                    <td>{item.credit}</td>
+                                    <td>{item.paymentMethod}</td>
+                                    <td className="payment-ref">{item.paymentRef}</td>
+                                    <td>{item.amount}</td>
+                                    <td>{item.currency}</td>
+                                    <td>{item.batchId}</td>
+                                    <td className="table-delete-row">
+                                        <button onClick={() => this.removeCredit()} className="btn btn-danger btn-flat">
+                                            <FontAwesomeIcon icon="times-circle" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 <Modal
                     visible={isOpenAddingForm}
                     attrs={{
@@ -172,13 +188,13 @@ class CreditsTab extends Component {
                 >
                     <Select
                         onChange={this.selectCustomer}
-                        selectedCustomerId={this.state.selectedCustomerId}
+                        value={this.state.selectedCustomerId}
                         list={customers}
                         name="Organisation"
                     />
                     {this.FieldInputs.map(item => <TextInput key={item.id} item={item} target={this} />)}
                 </Modal>
-            </div >
+            </div>
         );
     }
 }

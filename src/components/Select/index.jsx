@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 class Select extends Component {
     render() {
-        const { list, selectedCustomerId } = this.props;
+        const { name, list, value } = this.props;
         return (
             <div className="form-group">
-                <label className="font-weight-bold">Organisation</label>
-                <select className="form-control" value={selectedCustomerId} onChange={this.props.onChange}>
+                <label style={{ fontWeight: 500 }}>{name}</label>
+                <select className="form-control" value={value} onChange={this.props.onChange}>
                     {list.map(item => <option key={item.id} value={item.id}>{item.value}</option>)}
                 </select>
             </div>
@@ -16,9 +16,9 @@ class Select extends Component {
 }
 
 Select.propTypes = {
-    list: PropTypes.array,
-    name: PropTypes.string,
-    selectedCustomerId: PropTypes.string
+    list: PropTypes.array.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
 };
 
 export default Select;
