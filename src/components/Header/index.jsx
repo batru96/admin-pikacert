@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
+import { withRouter, Link } from 'react-router-dom';
+import Authentication from '../../helpers/authentication';
 
-class Header extends Component {
-    render() {
-        const { username } = this.props;
-        return (
+
+const Header = withRouter(
+    ({ history }) =>
+        Authentication.isLoggedIn ? (
             <div className="header-bar">
-                <span className="admin-name">{username}</span>
+                <Link to={"/"}>Home</Link>
+                <Link to={"/about"}>About</Link>
+                <button onClick={() => {
+                    Authentication.logout();
+                    history.push('/');
+                }}>Sign out</button>
             </div>
-        );
-    }
-}
+        ) : null
+);
 
 export default Header;

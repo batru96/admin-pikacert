@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faWindowClose, faTimesCircle, faPenSquare } from '@fortawesome/free-solid-svg-icons'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 import { getAdminToken } from './helpers/PikaSession';
 import checkToken from './api/checkToken';
 import Login from './pages/login';
 import Home from './pages/home';
 import Loading from './components/Loading/index';
+import About from './pages/About';
 import './App.css';
+import Authentication from './helpers/authentication';
+import Header from './components/Header';
 
 library.add(faWindowClose, faTimesCircle, faPenSquare);
 class App extends Component {
@@ -15,47 +19,52 @@ class App extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      isLogin: false
     };
-    this.loginSuccess = this.loginSuccess.bind(this);
   }
 
   componentWillMount() {
-      checkToken(getAdminToken(), error => {
-        if (error == null) {
-          this.setState({
-            isLogin: true,
-            isLoading: false
-          });
-        } else {
-          this.setState({
-            isLoading: false
-          });
-        }
+    checkToken(getAdminToken(), error => {
+      if (error == null) {
+        Authentication.loginSuccess();
+      }
+      this.setState({
+        isLoading: false
       });
-  }
-
-  loginSuccess() {
-    this.setState({
-      isLogin: true
     });
   }
 
   render() {
-    const { isLoading, isLogin } = this.state;
+    const { isLoading } = this.state;
+    if (isLoading) return <Loading visible={true} />
     return (
       <div className="App">
-        {isLoading ? <Loading visible={true} /> : isLogin ?
-          <Router>
-            <Route path="/" exact component={Home} />
-            <Route path="/login/" exact component={() => <Redirect to={{ pathname: '/' }} />} />
-          </Router> :
-          <Router>
-            <Route path="/" component={props => <Login {...props} loginSuccess={this.loginSuccess} />} />
-          </Router>}
+        <Router>
+          <Header />
+          <Route path="/login/" exact component={Login} />
+          <PrivateRoute path="/about" exact component={About} />
+          <PrivateRoute path="/" exact component={Home} />
+        </Router>
       </div>
     );
   }
 }
+
+const AuthButton = withRouter(
+  ({ history }) =>
+    Authentication.isLoggedIn ? (
+      <p>
+        Welcome!{" "}
+        <button
+          onClick={() => {
+            Authentication.logout();
+            history.push('/');
+          }}
+        >
+          Sign out
+        </button>
+      </p>
+    ) : null
+);
+
 
 export default App;

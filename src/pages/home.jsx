@@ -1,34 +1,60 @@
+// eslint-disable-next-line
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import Body from './Body';
+import CustomersTab from './CustomersTab';
+import CreditsTab from './CreditsTab';
+import CertsTab from './CertsTab';
+import PromoTab from './PromoTab';
+import BatchesTab from './BatchesTab';
+import BackgroundsTab from './BackgroundsTab';
+import MoreTab from './MoreTab'
 
-
-export default class Home extends Component {
+class Body extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {},
+            currentTab: 'MORE'
         };
     }
+    groupButtons = [
+        { id: 'btnCustomers', title: 'Customers', tabname: 'CUSTOMERS' },
+        { id: 'btnCredits', title: 'Credits', tabname: 'CREDITS' },
+        { id: 'btnCerts', title: 'Certificates', tabname: 'CERTIFICATES' },
+        { id: 'btnBatches', title: 'Batches', tabname: 'BATCHES' },
+        { id: 'btnPromo', title: 'Promo', tabname: 'PROMO' },
+        { id: 'btnBackgrounds', title: 'Backgrounds', tabname: 'BACKGROUNDS' },
+        { id: 'btnMore', title: 'More', tabname: 'MORE' },
+    ];
 
-    componentDidMount() {
-        setTimeout(() => {
+    changeTab(tabname) {
+        if (tabname !== this.state.currentTab) {
             this.setState({
-                user: {
-                    username: 'Khoa Hoang',
-                    email: 'hoangkhoakngt@gmail.com'
-                }
-            })
-        }, 1000);
+                currentTab: tabname
+            });
+        }
     }
 
     render() {
-        const { user } = this.state;
+        const { currentTab } = this.state;
         return (
-            <div>
-                <Header username={user.username} />
-                <Body />
+            <div className="body-content">
+                <div className="tabs-container">
+                    {this.groupButtons.map(item => (
+                        item.tabname === currentTab ?
+                            <button key={item.id} className="tab-button tab-button-active" onClick={() => this.changeTab(item.tabname)}>{item.title}</button>
+                            :
+                            <button key={item.id} className="tab-button" onClick={() => this.changeTab(item.tabname)}>{item.title}</button>
+                    ))}
+                </div>
+                {currentTab === 'CUSTOMERS' && <CustomersTab />}
+                {currentTab === 'CREDITS' && <CreditsTab />}
+                {currentTab === 'CERTIFICATES' && <CertsTab />}
+                {currentTab === 'BATCHES' && <BatchesTab />}
+                {currentTab === 'PROMO' && <PromoTab />}
+                {currentTab === 'BACKGROUNDS' && <BackgroundsTab />}
+                {currentTab === 'MORE' && <MoreTab />}
             </div>
-        );
+        )
     }
 }
+
+export default Body;
